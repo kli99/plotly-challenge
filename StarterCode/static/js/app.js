@@ -136,7 +136,8 @@ function buildGauge(testID) {
             height: 400,
             margin: { t: 25, r: 25, l: 25, b: 25 },
             font: { color: "#FD7526" },
-            paper_bgcolor: "whitesmomke"
+            paper_bgcolor: "whitesmomke",
+            yaxis: { title: "Scrub per week" }
         };
         Plotly.newPlot('gauge', data, layout);
 
@@ -201,6 +202,8 @@ function buildPlot(testID) {
                 b: 50
             },
             hovermode: "closest",
+            xaxis: { color: "#E3870D" },
+            yaxis: { color: "#E3870D" },
 
         };
         Plotly.newPlot("bar", data, layout)
@@ -208,14 +211,65 @@ function buildPlot(testID) {
 
 };
 
-build plot
-for pie chart
+//build bubble chart to correspond to all samples
 
 function buildBubble(testID) {
     d3.json(samplefile).then(function(thedata) {
         //console.log(data)
 
+        var testIDsample = thedata.samples.filter(row => { return row["id"] == testID });
+        // listing all data in index 0; calling index 0 to list only the keys and values
 
+        var testIDsample1 = testIDsample[0];
+        console.log(testIDsample1);
+
+        var value = testIDsample1["sample_values"];
+        var id = testIDsample1["otu_ids"];
+        var labels = testIDsample1["otu_labels"];
+        // var tname = labels.map(labels => `${labels}`);
+        console.log(value);
+        console.log(id);
+        //console.log(yticks);
+        console.log(labels);
+
+
+        var trace1 = {
+            type: 'scatter',
+            x: id,
+            y: value,
+            mode: 'markers',
+            marker: {
+                colors: id,
+                size: value,
+            },
+
+            text: labels,
+
+
+            transforms: [{
+                type: 'groupby',
+                groups: id,
+
+            }]
+        };
+
+        var data = [trace1];
+
+        var layout = {
+            showlegend: false,
+            height: 400,
+            width: 1100,
+            margin: {
+                l: 50,
+                r: 50,
+                t: 50,
+                b: 80
+            },
+            xaxis: { title: "OTU ID", color: "#E3870D" },
+            yaxis: { color: "#E3870D" },
+        };
+
+        Plotly.newPlot('bubble', data, layout);
 
     });
 };

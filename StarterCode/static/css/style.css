@@ -118,3 +118,8 @@ td {
 /* .bar:hover {
     fill: green;
 } */
+
+#bubblechart {
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
